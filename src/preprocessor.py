@@ -45,7 +45,7 @@ def main():
 	all_words = nltk.FreqDist(all_words)
 	#arbitrarily take first 5000 words because they are the most frequently used
 	words_features = list(all_words.keys())[:5000]
-	print(words_features)
+	#print(words_features)
 
 
 def clean(data):
@@ -76,9 +76,10 @@ def remove_noise(words:str) -> str:
 def to_stems(words:str, stopword:bool) -> list:
 	lemmatizer = WordNetLemmatizer()
 	words =  [lemmatizer.lemmatize(word) for word in words.split()]
+	print((words))
 	stemmer = SnowballStemmer('english',ignore_stopwords = stopword)
 	words = [stemmer.stem(word) for word in words]
-	#print(words)
+	print(words)
 	return words
 
 

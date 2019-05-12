@@ -33,7 +33,6 @@ def main():
 
 	e = time.time()
 	print("total runtime = " + str(e - s) + " seconds")
-	print('done cleaning')
 	#tfidf_bag = bag(train)
 	all_words = []
 	for tweet in train.tweet:
@@ -52,7 +51,7 @@ def clean(data):
 	clean_tweets = []
 	for tweet in data.tweet:
 		noiseless = remove_noise(tweet)
-		stemmed = to_stems(noiseless,True)
+		stemmed = to_stems(noiseless,False)
 		clean_tweets.append(stemmed)
 	data.tweet = clean_tweets
 
@@ -76,10 +75,10 @@ def remove_noise(words:str) -> str:
 def to_stems(words:str, stopword:bool) -> list:
 	lemmatizer = WordNetLemmatizer()
 	words =  [lemmatizer.lemmatize(word) for word in words.split()]
-	print((words))
+	#print((words))
 	stemmer = SnowballStemmer('english',ignore_stopwords = stopword)
 	words = [stemmer.stem(word) for word in words]
-	print(words)
+	#print(words)
 	return words
 
 

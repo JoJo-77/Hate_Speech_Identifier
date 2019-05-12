@@ -26,11 +26,11 @@ def predict(bag, labels):
 
     #F1: 0.70   runtime: 530 seconds
     #With FS: F1: 0.62  runtime: 401 seconds
-    neural_network(X_train, X_test, y_train, y_test)
+    #neural_network(X_train, X_test, y_train, y_test)
 
-    X_train = X_train[:7000]
+    X_train = X_train[:5000]
     X_test = X_test[:1000]
-    y_train = y_train[:7000]
+    y_train = y_train[:5000]
     y_test = y_test[:1000]
 
     print("shape of Xtrain, Xtest:  {}, {}".format(X_train.shape, X_test.shape))

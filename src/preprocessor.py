@@ -5,6 +5,7 @@ from sklearn.feature_extraction.text import *
 import numpy as np 
 import re
 from nltk.stem import *
+import nltk
 import threading
 from predictor import *
 
@@ -32,14 +33,29 @@ def main():
 
 	e = time.time()
 	print("total runtime = " + str(e - s) + " seconds")
+	print('done cleaning')
+	#tfidf_bag = bag(train)
+	all_words = []
+	for tweet in train.tweet:
+		for word in tweet:
+			all_words.append(word)
+	#word dictionary with frequency as keys
+	#usage: all_words.get(word)
+	#see all keys: all_words.keys()
+	all_words = nltk.FreqDist(all_words)
+	#arbitrarily take first 5000 words because they are the most frequently used
+	words_features = list(all_words.keys())[:5000]
+	print(words_features)
+
 
 def clean(data):
 	clean_tweets = []
 	for tweet in data.tweet:
 		noiseless = remove_noise(tweet)
-		stemmed = to_stems(noiseless,False)
+		stemmed = to_stems(noiseless,True)
 		clean_tweets.append(stemmed)
 	data.tweet = clean_tweets
+
 
 #preprocessing steps:
 #all lower case -> already done
@@ -49,16 +65,22 @@ def clean(data):
 #noise removal (remove symbols and numbers) -> use regex include hashtags and apostrophes
 
 def remove_noise(words:str) -> str:
-	regex = re.compile('[^a-zA-Z#\']')
-	return regex.sub(' ',words)
+	#remove single characters
+	words = re.sub(r'\s+[a-zA-Z]\s+', ' ', words)
+	#Substitute multiple spaces with single space
+	words = re.sub(r'\s+', ' ', words, flags=re.I)
+	#remove special characters except ' and #
+	words = re.sub(r'[^a-zA-Z\']', ' ', words)
+	return words
 
 def to_stems(words:str, stopword:bool) -> list:
+	lemmatizer = WordNetLemmatizer()
+	words =  [lemmatizer.lemmatize(word) for word in words.split()]
 	stemmer = SnowballStemmer('english',ignore_stopwords = stopword)
-	stems = []
-	for word in words.split():
-		stemmer.stem(word)
-		stems.append(word)
-	return stems
+	words = [stemmer.stem(word) for word in words]
+	#print(words)
+	return words
+
 
 def bag(data):
 	tweets = []

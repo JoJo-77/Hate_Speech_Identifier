@@ -1,19 +1,29 @@
-import pandas as pd 
+import time
+import pandas as pd
 import sklearn
 from sklearn.feature_extraction.text import *
 import numpy as np 
 import re
 from nltk.stem import *
 import threading
+from predictor import *
 
 def main():
+	s = time.time()
+
 	train = pd.read_csv("train.csv")
 	test = pd.read_csv("test.csv")
 	clean(train)
 	clean(test)
-	tfidf_bag = bag(train)
+	tfidf_bag = bag(train)		#rows = # of records 31,962		columns = dict size 37,543
+	print("Data processed")
+	#uncomment line below to run predictions. takes about 540 seconds
+	#predict(tfidf_bag, train.label)
 	train.to_csv("clean_train.csv", index=False, encoding='utf8')
 	test.to_csv("clean_test.csv", index=False, encoding='utf8')
+
+	e = time.time()
+	print("total runtime = " + str(e - s) + " seconds")
 
 def clean(data):
 	clean_tweets = []

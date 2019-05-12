@@ -11,7 +11,7 @@ from predictor import *
 
 def main():
 	s = time.time()
-	make_clean = False
+	make_clean = True
 	test = None
 	train = None
 	tfidf_bag = None
@@ -28,7 +28,7 @@ def main():
 	print("Data processed")
 	tfidf_bag = bag(train)	#rows = # of records 31,962		columns = dict size 37,543
 	#uncomment line below to run predictions. takes about 540 seconds
-	#predict(tfidf_bag, train.label)
+	predict(tfidf_bag, train.label)
 
 	e = time.time()
 	print("total runtime = " + str(e - s) + " seconds")

@@ -13,26 +13,32 @@ def predict(bag, labels):
 
     print("Bag of words shape: {}".format(bag.shape))
 
-    #feature selection:     reduces number of attributes by about 63%
-    sel = VarianceThreshold(threshold=(.00001 * (1 - .00001)))
+    #feature selection:     reduces number of attributes by about 80%
+    sel = VarianceThreshold(threshold=(.00002 * (1 - .00002)))
     new_bag = sel.fit_transform(bag)
     print("Shape after feature selection: {}".format(new_bag.shape))
 
     #split data
     X_train, X_test, y_train, y_test = train_test_split(new_bag, labels, test_size=0.2, random_state=1, stratify=labels)
 
-    # knn = KNeighborsClassifier(n_neighbors=5, algorithm='kd_tree')
-    # knn.fit(X_train, y_train)
-    # y_pred = knn.predict(X_test)
-    # print(knn.score(y_pred, y_test))
-
     #F1: 0.57   runtime: 10 seconds
     decision_tree(X_train, X_test, y_train, y_test)
 
     #F1: 0.70   runtime: 530 seconds
+    #With FS: F1: 0.62  runtime: 401 seconds
     neural_network(X_train, X_test, y_train, y_test)
 
+    X_train = X_train[:7000]
+    X_test = X_test[:1000]
+    y_train = y_train[:7000]
+    y_test = y_test[:1000]
+
+    print("shape of Xtrain, Xtest:  {}, {}".format(X_train.shape, X_test.shape))
+
     #naive bayes and knn cause memory errors
+    naive_bayes(X_train, X_test, y_train, y_test)
+
+    k_nearest(X_train, X_test, y_train, y_test)
 
 
 def decision_tree(X_train, X_test, y_train, y_test):
@@ -65,4 +71,14 @@ def neural_network(X_train, X_test, y_train, y_test):
     print("\nNeural network F1 score: {}".format(f1))
     e = time.time()
     print("Neural network runtime: " + str(e - s) + " seconds\n")
+
+def k_nearest(X_train, X_test, y_train, y_test):
+    s = time.time()
+    knn = KNeighborsClassifier(n_neighbors=1)
+    knn.fit(X_train, y_train)
+    preds = knn.predict(X_test)
+    f1 = f1_score(y_test, preds)
+    print("\nKNN F1 score: {}".format(f1))
+    e = time.time()
+    print("KNN runtime: " + str(e - s) + " seconds\n")
 

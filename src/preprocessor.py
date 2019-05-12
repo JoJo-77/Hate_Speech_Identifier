@@ -8,10 +8,10 @@ import threading
 
 
 def main():
-make_clean = False
-test = None
-train = None
-tfidf_bag = None
+	make_clean = False
+	test = None
+	train = None
+	tfidf_bag = None
 	if make_clean:
 		train = pd.read_csv("train.csv")
 		test = pd.read_csv("test.csv")
@@ -22,7 +22,8 @@ tfidf_bag = None
 	else:
 		train = pd.read_csv("clean_train.csv")
 		test = pd.read_csv("clean_test.csv")
-  tfidf_bag = bag(train)
+	tfidf_bag = bag(train)
+	prin
 
 def clean(data):
 	clean_tweets = []

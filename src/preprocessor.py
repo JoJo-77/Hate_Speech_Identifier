@@ -1,17 +1,22 @@
 import pandas as pd 
 import sklearn 
-import numpy as np 
 import re
 from nltk.stem import *
 import threading
 
+
 def main():
-	train = pd.read_csv("train.csv")
-	test = pd.read_csv("test.csv")
-	clean(train)
-	clean(test)
-	train.to_csv("clean_train.csv", index=False, encoding='utf8')
-	test.to_csv("clean_test.csv", index=False, encoding='utf8')
+	make_clean = False
+	if make_clean:
+		train = pd.read_csv("train.csv")
+		test = pd.read_csv("test.csv")
+		clean(train)
+		clean(test)
+		train.to_csv("clean_train.csv", index=False, encoding='utf8')
+		test.to_csv("clean_test.csv", index=False, encoding='utf8')
+	else:
+		train = pd.read_csv("clean_train.csv")
+		test = pd.read_csv("clean_test.csv")
 
 def clean(data):
 	clean_tweets = []
@@ -25,7 +30,7 @@ def clean(data):
 #all lower case -> already done
 #stemming -> Snowball
 #stopword removal -> in stemmer
-#normalization (ex: gud -> good / goooood -> good) -> we'll see if we need
+#normalization (ex: gud -> good / goooood -> good) -> we'll see if we need, i dont think we will
 #noise removal (remove symbols and numbers) -> use regex include hashtags and apostrophes
 
 def remove_noise(words:str) -> str:

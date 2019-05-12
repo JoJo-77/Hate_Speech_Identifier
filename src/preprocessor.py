@@ -1,5 +1,6 @@
 import pandas as pd 
-import sklearn 
+import sklearn
+from sklearn.feature_extraction.text import *
 import numpy as np 
 import re
 from nltk.stem import *
@@ -10,6 +11,7 @@ def main():
 	test = pd.read_csv("test.csv")
 	clean(train)
 	clean(test)
+	tfidf_bag = bag(train)
 	train.to_csv("clean_train.csv", index=False, encoding='utf8')
 	test.to_csv("clean_test.csv", index=False, encoding='utf8')
 
@@ -39,6 +41,16 @@ def to_stems(words:str, stopword:bool) -> list:
 		stemmer.stem(word)
 		stems.append(word)
 	return stems
+
+def bag(data):
+	tweets = []
+	for record in data.tweet:
+		tweets.append(" ".join(record))
+	vectorizer = CountVectorizer()
+	word_bag = vectorizer.fit_transform(tweets)		#type scipy.sparse.csr.csr_matrix (compressed sparse row matrix)
+	tfidf_transformer = TfidfTransformer()
+	tfidf = tfidf_transformer.fit_transform(word_bag)		#tfidf weighted word bag
+	return tfidf
 
 if __name__ == '__main__':
 	main()

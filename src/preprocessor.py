@@ -8,7 +8,7 @@ import threading
 
 
 def main():
-	make_clean = False
+	make_clean = True
 	test = None
 	train = None
 	tfidf_bag = None
@@ -23,13 +23,13 @@ def main():
 		train = pd.read_csv("clean_train.csv")
 		test = pd.read_csv("clean_test.csv")
 	tfidf_bag = bag(train)
-	prin
+	print(tfidf_bag)
 
 def clean(data):
 	clean_tweets = []
 	for tweet in data.tweet:
 		noiseless = remove_noise(tweet)
-		stemmed = to_stems(noiseless,False)
+		stemmed = to_stems(noiseless,True)
 		clean_tweets.append(stemmed)
 	data.tweet = clean_tweets
 

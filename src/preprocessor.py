@@ -1,12 +1,17 @@
 import pandas as pd 
-import sklearn 
+import sklearn
+from sklearn.feature_extraction.text import *
+import numpy as np 
 import re
 from nltk.stem import *
 import threading
 
 
 def main():
-	make_clean = False
+make_clean = False
+test = None
+train = None
+tfidf_bag = None
 	if make_clean:
 		train = pd.read_csv("train.csv")
 		test = pd.read_csv("test.csv")
@@ -17,6 +22,7 @@ def main():
 	else:
 		train = pd.read_csv("clean_train.csv")
 		test = pd.read_csv("clean_test.csv")
+  tfidf_bag = bag(train)
 
 def clean(data):
 	clean_tweets = []
@@ -44,6 +50,16 @@ def to_stems(words:str, stopword:bool) -> list:
 		stemmer.stem(word)
 		stems.append(word)
 	return stems
+
+def bag(data):
+	tweets = []
+	for record in data.tweet:
+		tweets.append(" ".join(record))
+	vectorizer = CountVectorizer()
+	word_bag = vectorizer.fit_transform(tweets)		#type scipy.sparse.csr.csr_matrix (compressed sparse row matrix)
+	tfidf_transformer = TfidfTransformer()
+	tfidf = tfidf_transformer.fit_transform(word_bag)		#tfidf weighted word bag
+	return tfidf
 
 if __name__ == '__main__':
 	main()

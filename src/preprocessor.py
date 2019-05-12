@@ -1,4 +1,5 @@
-import pandas as pd 
+import time
+import pandas as pd
 import sklearn
 from sklearn.feature_extraction.text import *
 import numpy as np 
@@ -6,9 +7,11 @@ import re
 from nltk.stem import *
 import nltk
 import threading
+from predictor import *
 
 
 def main():
+	s = time.time()
 	make_clean = True
 	test = None
 	train = None
@@ -23,6 +26,13 @@ def main():
 	else:
 		train = pd.read_csv("clean_train.csv")
 		test = pd.read_csv("clean_test.csv")
+	print("Data processed")
+	tfidf_bag = bag(train)	#rows = # of records 31,962		columns = dict size 37,543
+	#uncomment line below to run predictions. takes about 540 seconds
+	#predict(tfidf_bag, train.label)
+
+	e = time.time()
+	print("total runtime = " + str(e - s) + " seconds")
 	print('done cleaning')
 	#tfidf_bag = bag(train)
 	all_words = []
@@ -36,7 +46,7 @@ def main():
 	#arbitrarily take first 5000 words because they are the most frequently used
 	words_features = list(all_words.keys())[:5000]
 	print(words_features)
-	#print(tfidf_bag)
+
 
 def clean(data):
 	clean_tweets = []

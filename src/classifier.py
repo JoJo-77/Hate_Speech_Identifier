@@ -5,13 +5,18 @@ from preprocessor import *
 
 #trains the kmeans classifier and returns model ready for predicting
 def train(file,read_hateful):
-	#get csv into dataframe
-	train = pd.read_csv(file)
-	#clear out non-hateful tweets
+	train = None
 	if read_hateful:
+		#get csv into dataframe
+		train = pd.read_csv(file)
+		#clear out non-hateful tweets
 		get_hateful(train)
-	#clean hateful tweets 
-	clean(train)
+		#clean hateful tweets 
+		clean(train)
+	else:
+		#case for passing dataframe
+		train = file
+
 	#init vectorizer
 	vectorizer = TfidfVectorizer(stop_words='english')
 	#fit vectorizer with all tweets

@@ -64,7 +64,7 @@ def remove_noise(words:str) -> str:
 	#Substitute multiple spaces with single space
 	words = re.sub(r'\s+', ' ', words, flags=re.I)
 	#remove special characters except the apostraphe
-	words = re.sub(r'[^a-zA-Z\']', ' ', words)
+	words = re.sub(r'[^a-zA-Z]', ' ', words)
 	return words
 
 def to_stems(words:str, stopword:bool) -> str:

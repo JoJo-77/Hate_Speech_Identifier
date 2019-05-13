@@ -31,6 +31,7 @@ def main():
 	else:
 		train = pd.read_csv("clean_train.csv")
 		test = pd.read_csv("clean_test.csv")
+	tfidf_bag = bag(train)
 	print("Data processed")
 	tfidf_bag = bag(train)	#rows = # of records 31,962		columns = dict size 37,543
 	#uncomment line below to run predictions. takes about 540 seconds
@@ -38,7 +39,6 @@ def main():
 
 	e = time.time()
 	print("total runtime = " + str(e - s) + " seconds")
-	tfidf_bag = bag(train)
 
 
 
@@ -64,7 +64,7 @@ def remove_noise(words:str) -> str:
 	words = re.sub(r'\s+[a-zA-Z]\s+', ' ', words)
 	#Substitute multiple spaces with single space
 	words = re.sub(r'\s+', ' ', words, flags=re.I)
-	#remove special characters except ' and #
+	#remove special characters except the apostraphe
 	words = re.sub(r'[^a-zA-Z\']', ' ', words)
 	return words
 

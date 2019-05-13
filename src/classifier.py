@@ -29,11 +29,11 @@ def train(file):
 		print("Cluster %d:" % i),
 		for ind in ordered_centroids[i, :10]:
 			print(' %s' % terms[ind])
-	return model
+	return model, vectorizer
 
 #accepts a model and a string of text to be predicted, runs string through model 
 #returns predicted string
-def predict(model,string)
+def predict(model,string):
 	print("Prediction")
 	Y = vectorizer.transform([remove_noise(to_stems(string))])
 	prediction = model.predict(Y)

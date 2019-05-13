@@ -18,16 +18,16 @@ def predict(bag, labels):
     new_bag = sel.fit_transform(bag)
     print("Shape after feature selection: {}".format(new_bag.shape))
 
-    #split data
+    #split data for training and testing
     X_train, X_test, y_train, y_test = train_test_split(new_bag, labels, test_size=0.2, random_state=1, stratify=labels)
 
     #F1: 0.57   runtime: 10 seconds
     decision_tree(X_train, X_test, y_train, y_test)
 
-    #F1: 0.70   runtime: 530 seconds
-    #With FS: F1: 0.62  runtime: 401 seconds
-    #neural_network(X_train, X_test, y_train, y_test)
+    #Runtime fairly long ~400 seconds
+    #decision_tree(X_train, X_test, y_train, y_test)
 
+    #Subsample the array so naive Bayes and KNN won't crash
     X_train = X_train[:5000]
     X_test = X_test[:1000]
     y_train = y_train[:5000]
@@ -35,12 +35,12 @@ def predict(bag, labels):
 
     print("shape of Xtrain, Xtest:  {}, {}".format(X_train.shape, X_test.shape))
 
-    #naive bayes and knn cause memory errors
     naive_bayes(X_train, X_test, y_train, y_test)
 
     k_nearest(X_train, X_test, y_train, y_test)
 
 
+#Runs decision tree algorithm and prints F1 score
 def decision_tree(X_train, X_test, y_train, y_test):
     s = time.time()
     d_tree = tree.DecisionTreeClassifier()
@@ -51,6 +51,7 @@ def decision_tree(X_train, X_test, y_train, y_test):
     e = time.time()
     print("Decision tree runtime: " + str(e - s) + " seconds\n")
 
+#Runs naive Bayes algorithm and prints F1 score
 def naive_bayes(X_train, X_test, y_train, y_test):
     s = time.time()
     bayes = GaussianNB()
@@ -61,7 +62,7 @@ def naive_bayes(X_train, X_test, y_train, y_test):
     e = time.time()
     print("Naive Bayes runtime: " + str(e - s) + " seconds\n")
 
-
+#Runs neural network algorithm and prints F1 score
 def neural_network(X_train, X_test, y_train, y_test):
     s = time.time()
     neural = MLPClassifier()
@@ -72,6 +73,7 @@ def neural_network(X_train, X_test, y_train, y_test):
     e = time.time()
     print("Neural network runtime: " + str(e - s) + " seconds\n")
 
+#Runs KNN algorithm and prints F1 score
 def k_nearest(X_train, X_test, y_train, y_test):
     s = time.time()
     knn = KNeighborsClassifier(n_neighbors=1)

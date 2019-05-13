@@ -84,8 +84,10 @@ def to_stems(words:str, stopword:bool) -> str:
 
 def bag(data):
 	tweets = []
-	for record in data.tweet:
-		tweets.append(" ".join(record))
+	for record in data:
+		tweets.append(record)
+	print(tweets[0])
+	print(tweets[1])
 	vectorizer = CountVectorizer()
 	word_bag = vectorizer.fit_transform(tweets)		#type scipy.sparse.csr.csr_matrix (compressed sparse row matrix)
 	tfidf_transformer = TfidfTransformer()

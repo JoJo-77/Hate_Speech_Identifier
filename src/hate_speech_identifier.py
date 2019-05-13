@@ -5,8 +5,10 @@ import threading
 
 def main():
 	s = time.time()
+	#store data into dataframes
 	train = pd.read_csv("train.csv")
 	test = pd.read_csv("test.csv")
+	#preprocess data
 	clean(train)
 	clean(test)
 
@@ -19,11 +21,16 @@ def main():
 #---------------------------------------------------
 
 #-----------Clustering------------------------------
+	#create deep copy of training data
 	hateful = train.copy(deep = True)
-	get_hateful(hateful)
+	#separate out hateful tweets
+	classifier.get_hateful(hateful)
+	#train classifier
 	kmeans_model, vectorizer = classifier.train(hateful,False)
 	print("Clusters Found after " + str(time.time() - s) + " sec")
-
 #------------------------------------------------
+
+	print("total runtime: " + str(time.time()-s) + " sec")
+
 if __name__ == '__main__':
 	main()

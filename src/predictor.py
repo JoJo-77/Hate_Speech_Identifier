@@ -35,7 +35,6 @@ def predict(bag, labels):
 
     print("shape of Xtrain, Xtest:  {}, {}".format(X_train.shape, X_test.shape))
 
-    #naive bayes and knn cause memory errors
     naive_bayes(X_train, X_test, y_train, y_test)
 
     k_nearest(X_train, X_test, y_train, y_test)

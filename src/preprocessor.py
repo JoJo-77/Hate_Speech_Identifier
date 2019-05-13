@@ -51,28 +51,23 @@ def clean(data):
 	data.tweet = clean_tweets
 
 
-#preprocessing steps:
-#all lower case -> already done
-#stemming -> Snowball
-#stopword removal -> in stemmer
-#normalization (ex: gud -> good / goooood -> good) -> we'll see if we need, i dont think we will
-#noise removal (remove symbols and numbers) -> use regex include hashtags and apostrophes
-
+#takes in a string and uses regex to filter out unnecessary characters/symbols
 def remove_noise(words:str) -> str:
+	#remove special characters
+	words = re.sub(r'[^a-zA-Z]', ' ', words)
 	#remove single characters
 	words = re.sub(r'\s+[a-zA-Z]\s+', ' ', words)
 	#Substitute multiple spaces with single space
 	words = re.sub(r'\s+', ' ', words, flags=re.I)
-	#remove special characters except the apostraphe
-	words = re.sub(r'[^a-zA-Z]', ' ', words)
+
 	return words
 
 def to_stems(words:str, stopword:bool) -> str:
 	lemmatizer = WordNetLemmatizer()
 	words =  [lemmatizer.lemmatize(word) for word in words.split()]
 	#print((words))
-	#stemmer = SnowballStemmer('english',ignore_stopwords = stopword)
-	#words = [stemmer.stem(word) for word in words]
+	stemmer = SnowballStemmer('english',ignore_stopwords = stopword)
+	words = [stemmer.stem(word) for word in words]
 	ret_string = ''
 	for word in words:
 		ret_string += word + ' '

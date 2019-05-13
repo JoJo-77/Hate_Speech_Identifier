@@ -23,10 +23,12 @@ def train(file,read_hateful):
 	X = vectorizer.fit_transform([x[1][2] for x in train.iterrows()])
 	#save all feature names
 	terms = vectorizer.get_feature_names()
+
 	#initialize and fit model on all tfidf tweet scores
 	cluster_num = 2
-	model = KMeans(n_clusters=cluster_num, init='k-means++', max_iter=400, n_init=1)
+	model = KMeans(n_clusters=cluster_num, init='k-means++', max_iter=700, n_init=1)
 	model.fit(X)
+
 	#print out top terms in each cluster
 	print("Top Terms Per Cluster:")
 	ordered_centroids = model.cluster_centers_.argsort()[:,::-1]
@@ -46,6 +48,7 @@ def predict(model,string):
 	print(prediction)
 	return prediction
 
+#takes in a dataframe and drops all rows not lablelled as hateful
 def get_hateful(df):
 	index = 0
 	for row in df.iterrows():

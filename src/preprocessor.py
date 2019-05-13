@@ -33,18 +33,9 @@ def main():
 
 	e = time.time()
 	print("total runtime = " + str(e - s) + " seconds")
-	#tfidf_bag = bag(train)
-	all_words = []
-	for tweet in train.tweet:
-		for word in tweet:
-			all_words.append(word)
-	#word dictionary with frequency as keys
-	#usage: all_words.get(word)
-	#see all keys: all_words.keys()
-	all_words = nltk.FreqDist(all_words)
-	#arbitrarily take first 5000 words because they are the most frequently used
-	words_features = list(all_words.keys())[:5000]
-	#print(words_features)
+	tfidf_bag = bag(train)
+
+
 
 
 def clean(data):
@@ -72,14 +63,18 @@ def remove_noise(words:str) -> str:
 	words = re.sub(r'[^a-zA-Z\']', ' ', words)
 	return words
 
-def to_stems(words:str, stopword:bool) -> list:
+def to_stems(words:str, stopword:bool) -> str:
 	lemmatizer = WordNetLemmatizer()
 	words =  [lemmatizer.lemmatize(word) for word in words.split()]
 	#print((words))
 	stemmer = SnowballStemmer('english',ignore_stopwords = stopword)
 	words = [stemmer.stem(word) for word in words]
+	ret_string = ''
+	for word in words:
+		ret_string += word + ' '
+	ret_string = ret_string[:-1]
 	#print(words)
-	return words
+	return ret_string
 
 
 def bag(data):

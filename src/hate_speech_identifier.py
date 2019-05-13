@@ -17,7 +17,7 @@ def main():
 	#before threading: 107 sec
 	#after threading: 94 sec -> 13 second improvement
 	print("Data processed after " + str(time.time() - s) + " sec")
-	tfidf_bag = bag(train.tweet)
+	tfidf_bag = bag([x[1][2] for x in train.iterrows()])
 
 #-----------Insert Predictor Here-------------------
 #Needs to return a df of hateful tweets from test, 
@@ -27,7 +27,7 @@ def main():
 #---------------------------------------------------
 
 #-----------Clustering------------------------------
-	kmeans_model, vectorizer = classifier.train(hateful)
+	kmeans_model, vectorizer = classifier.train(hateful,False)
 	print("Clusters Found after " + str(time.time() - s) + " sec")
 
 

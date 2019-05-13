@@ -31,9 +31,8 @@ def main():
 	else:
 		train = pd.read_csv("clean_train.csv")
 		test = pd.read_csv("clean_test.csv")
-	tfidf_bag = bag(train)
 	print("Data processed")
-	tfidf_bag = bag(train)	#rows = # of records 31,962		columns = dict size 37,543
+	tfidf_bag = bag([x[1][2] for x in train.iterrows()])	#rows = # of records 31,962		columns = dict size 37,543
 	#uncomment line below to run predictions. takes about 540 seconds
 	predict(tfidf_bag, train.label)
 
@@ -72,8 +71,8 @@ def to_stems(words:str, stopword:bool) -> str:
 	lemmatizer = WordNetLemmatizer()
 	words =  [lemmatizer.lemmatize(word) for word in words.split()]
 	#print((words))
-	stemmer = SnowballStemmer('english',ignore_stopwords = stopword)
-	words = [stemmer.stem(word) for word in words]
+	#stemmer = SnowballStemmer('english',ignore_stopwords = stopword)
+	#words = [stemmer.stem(word) for word in words]
 	ret_string = ''
 	for word in words:
 		ret_string += word + ' '

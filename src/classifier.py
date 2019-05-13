@@ -4,11 +4,12 @@ from preprocessor import *
 
 
 #trains the kmeans classifier and returns model ready for predicting
-def train(file):
+def train(file,read_hateful):
 	#get csv into dataframe
 	train = pd.read_csv(file)
 	#clear out non-hateful tweets
-	get_hateful(train)
+	if read_hateful:
+		get_hateful(train)
 	#clean hateful tweets 
 	clean(train)
 	#init vectorizer

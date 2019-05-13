@@ -17,7 +17,14 @@ def main():
 	#before threading: 107 sec
 	#after threading: 94 sec -> 13 second improvement
 	print("Data processed after " + str(time.time() - s) + " sec")
+<<<<<<< HEAD
 	tfidf_bag = bag([x[1][2] for x in train.iterrows()])
+=======
+	train = pd.read_csv("train.csv")
+	clean(train)
+	tfidf_bag = bag(train.tweet)
+	predict(tfidf_bag, train.label)
+>>>>>>> 6885afadbdc5f615b26443f65971afaf1970dd7d
 
 #-----------Insert Predictor Here-------------------
 #Needs to return a df of hateful tweets from test, 

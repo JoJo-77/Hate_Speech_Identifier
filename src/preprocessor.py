@@ -6,8 +6,13 @@ import numpy as np
 import re
 from nltk.stem import *
 import nltk
-import threading
 from predictor import *
+
+#things to do:
+# thread out everything
+# create main function that ties all 3 parts together
+# collect data from each part 
+# finish report
 
 
 def main():

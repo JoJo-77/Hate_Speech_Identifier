@@ -8,40 +8,8 @@ from nltk.stem import *
 import nltk
 from predictor import *
 
-#things to do:
-# thread out everything
-# create main function that ties all 3 parts together
-# collect data from each part 
-# finish report
 
-
-def main():
-	s = time.time()
-	make_clean = True
-	test = None
-	train = None
-	tfidf_bag = None
-	if make_clean:
-		train = pd.read_csv("train.csv")
-		test = pd.read_csv("test.csv")
-		clean(train)
-		clean(test)
-		train.to_csv("clean_train.csv", index=False, encoding='utf8')
-		test.to_csv("clean_test.csv", index=False, encoding='utf8')
-	else:
-		train = pd.read_csv("clean_train.csv")
-		test = pd.read_csv("clean_test.csv")
-	print("Data processed")
-	tfidf_bag = bag([x[1][2] for x in train.iterrows()])	#rows = # of records 31,962		columns = dict size 37,543
-	#uncomment line below to run predictions. takes about 540 seconds
-	predict(tfidf_bag, train.label)
-
-	e = time.time()
-	print("total runtime = " + str(e - s) + " seconds")
-
-
-
-
+#runs dataframe through all functions listed below
 def clean(data):
 	clean_tweets = []
 	for tweet in data.tweet:
@@ -59,9 +27,9 @@ def remove_noise(words:str) -> str:
 	words = re.sub(r'\s+[a-zA-Z]\s+', ' ', words)
 	#Substitute multiple spaces with single space
 	words = re.sub(r'\s+', ' ', words, flags=re.I)
-
 	return words
 
+#lemmatizes and stemms each string passed through it, returns them as a string
 def to_stems(words:str, stopword:bool) -> str:
 	lemmatizer = WordNetLemmatizer()
 	words =  [lemmatizer.lemmatize(word) for word in words.split()]
@@ -75,7 +43,7 @@ def to_stems(words:str, stopword:bool) -> str:
 	#print(words)
 	return ret_string
 
-
+#creates a bag of words with tfidf scores for each word from dataframe
 def bag(data):
 	tweets = []
 	for record in data:

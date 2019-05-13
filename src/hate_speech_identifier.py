@@ -1,7 +1,6 @@
 import predictor
 from preprocessor import *
 import classifier
-import threading
 
 def main():
 	s = time.time()
